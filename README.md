@@ -40,7 +40,7 @@ These scripts automate the tedious Linux configuration needed to get all these p
 
 2. **Configure your settings:**
    Edit the configuration files prior to execution to insert your specific deployment parameters:
-   * **`config.sh`**: Central configuration for all bash scripts. Update `USERNAME`, `USER_HOME`, and `HA_URL` here.
+   * **`config.sh`**: Central configuration for all bash scripts. Update `HA_URL` here. *(Note: `USERNAME` and `USER_HOME` are now automatically detected!)*
    * **`unblanker.json`**: This configuration file controls `unblanker.py`. Update your `mqtt_broker`, `timeout_seconds`, and the `triggers` object. You can map specific detection labels (like `"person"`, `"car"`) strictly to specific camera names (like `"front_door"`). See the JSON template for an example.
 
 3. **Deploy:**
