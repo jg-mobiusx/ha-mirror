@@ -2,18 +2,37 @@
 import time
 import json
 import subprocess
+import os
 import paho.mqtt.client as mqtt
 
-# Configuration
-MQTT_BROKER = "YOUR_MQTT_BROKER_IP"  # Your HA/Frigate IP
-MQTT_PORT = 1883
-MQTT_USER = ""                # Fill in if your broker requires auth
-MQTT_PASS = ""                # Fill in if your broker requires auth
-MQTT_TOPIC = "frigate/events"
+# Load Configuration
+CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "unblanker.json")
 
-TIMEOUT_SECONDS = 30 * 60     # 30 minutes
+try:
+    with open(CONFIG_FILE, "r") as f:
+        config = json.load(f)
+except Exception as e:
+    print(f"Error loading {CONFIG_FILE}: {e}")
+    # Fallback to safe defaults
+    config = {
+        "mqtt_broker": "127.0.0.1",
+        "mqtt_port": 1883,
+        "mqtt_user": "",
+        "mqtt_pass": "",
+        "mqtt_topic": "frigate/events",
+        "timeout_seconds": 1800,
+        "trigger_labels": ["person"]
+    }
 
-last_person_time = time.time()
+MQTT_BROKER = config.get("mqtt_broker", "127.0.0.1")
+MQTT_PORT = config.get("mqtt_port", 1883)
+MQTT_USER = config.get("mqtt_user", "")
+MQTT_PASS = config.get("mqtt_pass", "")
+MQTT_TOPIC = config.get("mqtt_topic", "frigate/events")
+TIMEOUT_SECONDS = config.get("timeout_seconds", 1800)
+TRIGGER_LABELS = config.get("trigger_labels", ["person", "car"])
+
+last_trigger_time = time.time()
 screen_is_on = None
 
 def get_active_outputs():
@@ -54,13 +73,13 @@ def on_connect(client, userdata, flags, rc):
     set_screen_state(True)
 
 def on_message(client, userdata, msg):
-    global last_person_time
+    global last_trigger_time
     try:
         payload = json.loads(msg.payload.decode())
         
-        # We only care about Frigate catching a 'person'
-        if payload.get("after", {}).get("label") == "person":
-            last_person_time = time.time()
+        # We check if Frigate caught any of our configured trigger labels
+        if payload.get("after", {}).get("label") in TRIGGER_LABELS:
+            last_trigger_time = time.time()
             set_screen_state(True)
             
     except json.JSONDecodeError:
@@ -88,8 +107,8 @@ try:
     while True:
         time.sleep(5)
         
-        # If 30 minutes have passed since the last person ping, turn it off
-        if time.time() - last_person_time > TIMEOUT_SECONDS:
+        # Turn off the screen if the timeout has passed since the last trigger
+        if time.time() - last_trigger_time > TIMEOUT_SECONDS:
             set_screen_state(False)
             
 except KeyboardInterrupt:

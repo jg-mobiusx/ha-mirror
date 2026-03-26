@@ -39,10 +39,10 @@ These scripts automate the tedious Linux configuration needed to get all these p
    ```
 
 2. **Configure your settings:**
-   Edit the scripts prior to execution to insert your specific deployment parameters:
+   Edit the scripts and configuration files prior to execution to insert your specific deployment parameters:
    * In `build-kiosk-v2.sh` (or `build-kiosk.sh`): Update `USERNAME`, `USER_HOME`, and `HA_URL`.
    * In `install-unblanker.sh`: Update `USERNAME` and `USER_HOME`.
-   * In `unblanker.py`: Update `MQTT_BROKER`, and optionally `MQTT_USER` / `MQTT_PASS`.
+   * **`unblanker.json`**: This new configuration file controls `unblanker.py`. Update your `mqtt_broker`, `timeout_seconds`, and add any tags to the `trigger_labels` array if you want it to wake up for events other than a `"person"` (e.g., `"car"`, `"dog"`).
 
 3. **Deploy:**
    Make the script executable and run it:

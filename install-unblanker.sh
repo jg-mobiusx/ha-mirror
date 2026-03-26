@@ -9,11 +9,13 @@ echo "Installing python MQTT library & wlr-randr..."
 sudo apt update
 sudo apt install -y python3-paho-mqtt wlr-randr
 
-echo "Copying unblanker script..."
+echo "Copying unblanker script and config..."
 sudo -u "$USERNAME" mkdir -p "$INSTALL_DIR"
 sudo cp unblanker.py "$INSTALL_DIR/unblanker.py"
+sudo cp unblanker.json "$INSTALL_DIR/unblanker.json"
 sudo chmod +x "$INSTALL_DIR/unblanker.py"
 sudo chown "$USERNAME:$USERNAME" "$INSTALL_DIR/unblanker.py"
+sudo chown "$USERNAME:$USERNAME" "$INSTALL_DIR/unblanker.json"
 
 echo "Creating systemd background service..."
 cat <<EOF | sudo tee /etc/systemd/system/kiosk-unblanker.service >/dev/null

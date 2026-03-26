@@ -1,0 +1,12 @@
+{
+  "mqtt_broker": "YOUR_MQTT_BROKER_IP",
+  "mqtt_port": 1883,
+  "mqtt_user": "",
+  "mqtt_pass": "",
+  "mqtt_topic": "frigate/events",
+  "timeout_seconds": 1800,
+  "trigger_labels": [
+    "person",
+    "car"
+  ]
+}
