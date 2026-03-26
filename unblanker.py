@@ -5,7 +5,7 @@ import subprocess
 import paho.mqtt.client as mqtt
 
 # Configuration
-MQTT_BROKER = "172.16.44.11"  # Your HA/Frigate IP
+MQTT_BROKER = "YOUR_MQTT_BROKER_IP"  # Your HA/Frigate IP
 MQTT_PORT = 1883
 MQTT_USER = ""                # Fill in if your broker requires auth
 MQTT_PASS = ""                # Fill in if your broker requires auth

@@ -1,10 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-USERNAME="john"
-USER_HOME="/home/john"
+USERNAME="YOUR_USERNAME"
+USER_HOME="/home/YOUR_USERNAME"
 USER_ID="1000"
-HA_URL="http://172.16.44.11:8123/dashboard-drive/0"
+HA_URL="http://YOUR_HA_IP:8123/dashboard-drive/0"
 
 echo "Updating system..."
 sudo apt update

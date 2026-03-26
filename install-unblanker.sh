@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-USERNAME="john"
-USER_HOME="/home/john"
+USERNAME="YOUR_USERNAME"
+USER_HOME="/home/YOUR_USERNAME"
 INSTALL_DIR="$USER_HOME/.local/bin"
 
 echo "Installing python MQTT library & wlr-randr..."
