@@ -21,7 +21,10 @@ except Exception as e:
         "mqtt_pass": "",
         "mqtt_topic": "frigate/events",
         "timeout_seconds": 1800,
-        "trigger_labels": ["person"]
+        "triggers": {
+            "front_door": ["person"],
+            "driveway": ["person", "car"]
+        }
     }
 
 MQTT_BROKER = config.get("mqtt_broker", "127.0.0.1")
@@ -30,7 +33,7 @@ MQTT_USER = config.get("mqtt_user", "")
 MQTT_PASS = config.get("mqtt_pass", "")
 MQTT_TOPIC = config.get("mqtt_topic", "frigate/events")
 TIMEOUT_SECONDS = config.get("timeout_seconds", 1800)
-TRIGGER_LABELS = config.get("trigger_labels", ["person", "car"])
+TRIGGERS = config.get("triggers", {"front_door": ["person"], "driveway": ["person", "car"]})
 
 last_trigger_time = time.time()
 screen_is_on = None
@@ -76,11 +79,26 @@ def on_message(client, userdata, msg):
     global last_trigger_time
     try:
         payload = json.loads(msg.payload.decode())
+        after = payload.get("after", {})
         
-        # We check if Frigate caught any of our configured trigger labels
-        if payload.get("after", {}).get("label") in TRIGGER_LABELS:
-            last_trigger_time = time.time()
-            set_screen_state(True)
+        label = after.get("label")
+        camera = after.get("camera")
+        
+        # Match camera against configured triggers
+        if camera in TRIGGERS:
+            allowed_labels = TRIGGERS[camera]
+            
+            # Match label for this specific camera
+            if label in allowed_labels or "*" in allowed_labels:
+                last_trigger_time = time.time()
+                set_screen_state(True)
+        
+        # Also support a global fallback matching rule mapping any camera via "*"
+        elif "*" in TRIGGERS:
+            allowed_labels = TRIGGERS["*"]
+            if label in allowed_labels or "*" in allowed_labels:
+                last_trigger_time = time.time()
+                set_screen_state(True)
             
     except json.JSONDecodeError:
         pass

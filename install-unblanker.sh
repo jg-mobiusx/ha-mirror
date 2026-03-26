@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-USERNAME="YOUR_USERNAME"
-USER_HOME="/home/YOUR_USERNAME"
+# Load central config
+source "$(dirname "$0")/config.sh"
 INSTALL_DIR="$USER_HOME/.local/bin"
 
 echo "Installing python MQTT library & wlr-randr..."

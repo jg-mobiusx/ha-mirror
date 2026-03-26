@@ -1,10 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-USERNAME="YOUR_USERNAME"
-USER_HOME="/home/YOUR_USERNAME"
+# Load central config
+source "$(dirname "$0")/config.sh"
+
 USER_ID="1000"
-HA_URL="http://YOUR_HA_IP:8123/dashboard-drive/0"
 
 echo "Updating system..."
 sudo apt update

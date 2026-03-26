@@ -39,10 +39,9 @@ These scripts automate the tedious Linux configuration needed to get all these p
    ```
 
 2. **Configure your settings:**
-   Edit the scripts and configuration files prior to execution to insert your specific deployment parameters:
-   * In `build-kiosk-v2.sh` (or `build-kiosk.sh`): Update `USERNAME`, `USER_HOME`, and `HA_URL`.
-   * In `install-unblanker.sh`: Update `USERNAME` and `USER_HOME`.
-   * **`unblanker.json`**: This new configuration file controls `unblanker.py`. Update your `mqtt_broker`, `timeout_seconds`, and add any tags to the `trigger_labels` array if you want it to wake up for events other than a `"person"` (e.g., `"car"`, `"dog"`).
+   Edit the configuration files prior to execution to insert your specific deployment parameters:
+   * **`config.sh`**: Central configuration for all bash scripts. Update `USERNAME`, `USER_HOME`, and `HA_URL` here.
+   * **`unblanker.json`**: This configuration file controls `unblanker.py`. Update your `mqtt_broker`, `timeout_seconds`, and the `triggers` object. You can map specific detection labels (like `"person"`, `"car"`) strictly to specific camera names (like `"front_door"`). See the JSON template for an example.
 
 3. **Deploy:**
    Make the script executable and run it:
