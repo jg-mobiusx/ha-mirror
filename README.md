@@ -14,6 +14,13 @@ These scripts automate the tedious Linux configuration needed to get all these p
 - You run **`build-kiosk-v2.sh`** to download packages, create the background `systemd` services, and point the kiosk directly to your Home Assistant URL.
 - You run **`install-unblanker.sh`** to deploy the `unblanker.py` script. This becomes a background service that silently listens to your MQTT network and translates Home Assistant occupancy events into physical monitor commands (`wlr-randr`) to wake or sleep the screen.
 
+## Requirements
+- **Hardware**: Raspberry Pi (Pi 4 or Pi 5 strongly recommended for smooth hardware-accelerated Chromium rendering).
+- **Operating System**: **Raspberry Pi OS Lite (64-bit) - Bookworm**. 
+  *(It is highly recommended to start with the "Lite" headless image rather than the full Desktop version. These scripts install a minimal Wayland display manager directly over the terminal, ensuring no memory is wasted on a background desktop environment.)*
+- **Home Assistant**: A running instance accessible to the Raspberry Pi.
+- **MQTT Broker**: (Recommended) A broker like Mosquitto if you plan to use the automated screen unblanking based on Frigate/motion events.
+
 ---
 
 ## Scripts Overview
